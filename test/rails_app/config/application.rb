@@ -10,6 +10,10 @@ Bundler.require :default, :test
 
 require "bushido"
 
+puts "dummy app start"
+puts Bushido::Data.inspect
+puts Bushido::DataController.inspect
+
 module Dummy
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

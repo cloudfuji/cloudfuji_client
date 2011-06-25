@@ -1,4 +1,8 @@
-Dummy::Application.routes.draw do
+Rails.application.routes.draw do
+  
+  root :to => "application#index"
+  
+  bushido_routes
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
