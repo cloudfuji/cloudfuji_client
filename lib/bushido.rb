@@ -21,6 +21,7 @@ module Bushido #:nodoc:
   require "bushido/middleware"
   require "bushido/models"
   require "bushido/schema"
+  require "bushido/ido_schema"
   
   # Default way to setup Bushido. Run rails generate bushido_install to create
   # a fresh initializer with all configuration values.
