@@ -1,0 +1,66 @@
+DEPRECATION WARNING: config.action_view.debug_rjs will be removed in 3.1, from 3.1 onwards you will need to install prototype-rails to continue to use RJS templates . (called from service at /Users/kevisazombie/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/webrick/httpserver.rb:111)
+
+
+Started GET "/" for 127.0.0.1 at 2011-06-24 17:56:21 -0700
+  Processing by ApplicationController#index as HTML
+Completed 500 Internal Server Error in 20ms
+
+ActionView::MissingTemplate (Missing template application/index with {:handlers=>[:erb, :rjs, :builder, :rhtml, :rxml], :formats=>[:html], :locale=>[:en, :en]} in view paths "/Users/kevisazombie/Projects/Web/bushidogem/test/rails_app/app/views", "/Users/kevisazombie/Projects/Web/bushidogem/app/views"):
+  
+
+Rendered /Users/kevisazombie/.rvm/gems/ruby-1.9.2-p180@bushidogem/gems/actionpack-3.0.9/lib/action_dispatch/middleware/templates/rescues/missing_template.erb within rescues/layout (1.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-06-24 17:56:28 -0700
+  Processing by ApplicationController#index as HTML
+Completed 500 Internal Server Error in 4ms
+
+ActionView::MissingTemplate (Missing template application/index with {:handlers=>[:erb, :rjs, :builder, :rhtml, :rxml], :formats=>[:html], :locale=>[:en, :en]} in view paths "/Users/kevisazombie/Projects/Web/bushidogem/test/rails_app/app/views", "/Users/kevisazombie/Projects/Web/bushidogem/app/views"):
+  
+
+Rendered /Users/kevisazombie/.rvm/gems/ruby-1.9.2-p180@bushidogem/gems/actionpack-3.0.9/lib/action_dispatch/middleware/templates/rescues/missing_template.erb within rescues/layout (0.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-06-24 17:57:14 -0700
+  Processing by ApplicationController#index as HTML
+Rendered application/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 6ms (Views: 5.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2011-06-24 17:57:16 -0700
+  Processing by ApplicationController#index as HTML
+Rendered application/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 6ms (Views: 5.7ms | ActiveRecord: 0.0ms)
+DEPRECATION WARNING: config.action_view.debug_rjs will be removed in 3.1, from 3.1 onwards you will need to install prototype-rails to continue to use RJS templates . (called from <top (required)> at /Users/kevisazombie/Projects/Web/bushidogem/test/rails_app/app/controllers/application_controller.rb:1)
+DEPRECATION WARNING: config.action_view.debug_rjs will be removed in 3.1, from 3.1 onwards you will need to install prototype-rails to continue to use RJS templates . (called from service at /Users/kevisazombie/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/webrick/httpserver.rb:111)
+
+
+Started GET "/" for 127.0.0.1 at 2011-06-24 17:58:13 -0700
+  Processing by ApplicationController#index as HTML
+Rendered application/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 6ms (Views: 5.5ms | ActiveRecord: 0.0ms)
+
+
+Started PUT "/" for 127.0.0.1 at 2011-06-24 17:58:43 -0700
+  Processing by ApplicationController#index as 
+Rendered application/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 13ms (Views: 12.8ms | ActiveRecord: 0.0ms)
+
+
+Started PUT "/bushido/envs/cool.json" for 127.0.0.1 at 2011-06-24 17:59:16 -0700
+  Processing by Bushido::EnvsController#update as JSON
+  Parameters: {"value"=>"awesome", "id"=>"cool"}
+Completed 500 Internal Server Error in 3ms
+
+NameError (uninitialized constant Bushido::Hooks):
+  
+
+Rendered /Users/kevisazombie/.rvm/gems/ruby-1.9.2-p180@bushidogem/gems/actionpack-3.0.9/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.2ms)
+Rendered /Users/kevisazombie/.rvm/gems/ruby-1.9.2-p180@bushidogem/gems/actionpack-3.0.9/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (4.0ms)
+Rendered /Users/kevisazombie/.rvm/gems/ruby-1.9.2-p180@bushidogem/gems/actionpack-3.0.9/lib/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (9.8ms)
+
+
+Started PUT "/bushido/envs/cool.json" for 127.0.0.1 at 2011-06-24 18:00:03 -0700
+  Processing by Bushido::EnvsController#update as JSON
+  Parameters: {"value"=>"awesome", "id"=>"cool"}
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.0ms)
