@@ -27,6 +27,7 @@ module Bushido
 
       
       def publish(model, model_data, verb=:post)
+        puts "in the Data::Publish method"
         # POST to /apps/:id/bus
         data = bushido_data(model, model_data)
 

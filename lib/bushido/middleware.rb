@@ -13,9 +13,12 @@ module Bushido
       @bushido_app_name       = ENV['BUSHIDO_APP']
       @bushido_metrics_token  = ENV['BUSHIDO_METRICS_TOKEN']
       @bushido_claimed        = ENV['BUSHIDO_CLAIMED'].nil? ? false : true
+
     end
 
     def call(env)
+      @bushido_claimed        = ENV['BUSHIDO_CLAIMED'].nil? ? false : true
+
       status, headers, response = @app.call(env)
       
       unless @bushido_app_name.empty?

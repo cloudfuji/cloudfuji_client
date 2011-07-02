@@ -12,6 +12,7 @@ module Bushido #:nodoc:
   require "bushido/hooks"
   require "bushido/platform"
   require "bushido/utils"
+  require "bushido/hooks"
   require "bushido/command"
   require "bushido/app"
   require "bushido/user"
