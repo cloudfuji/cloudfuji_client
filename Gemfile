@@ -22,3 +22,7 @@ platforms :ruby do
   #   gem "bson_ext", "~> 1.3.0"
   # end
 end
+
+group :development do
+  gem 'ci_reporter'
+end
