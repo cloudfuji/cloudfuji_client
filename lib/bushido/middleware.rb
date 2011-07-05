@@ -29,7 +29,7 @@ module Bushido
               var _bushido_metrics_token = '#{@bushido_metrics_token}';
               (function() {
                 var bushido = document.createElement('script'); bushido.type = 'text/javascript'; bushido.async = true;
-                bushido.src = '#{BUSHIDO_JS_URL}?#{::Bushido::VERSION.gsub('.', '')}';
+                bushido.src = '#{BUSHIDO_JS_URL}?ts=#{::Bushido::VERSION.gsub('.', '')}';
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(bushido, s);
               })();
             </script>     
