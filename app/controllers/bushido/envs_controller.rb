@@ -2,7 +2,11 @@ module Bushido
   class EnvsController < ApplicationController
     # PUT /bushido/envs/:id
     def update
-      if ENV["BUSHIDO_KEY"] != params[:key] or params[:id] == "BUSHIDO_KEY"
+      logger.info "Updating ENV vars!"
+      logger.info "params: #{params.inspect}"
+
+      if Bushido::Platform.key != params[:key] or params[:id] == Bushido::Platform.key
+        logger.info "key didn't match! #{Bushido::Platform.key} != #{params[:key]}"
         respond_to do |format|
           format.html { render :layout => false, :text => true, :status => :forbidden }
           format.json { render :status => :unprocessable_entity }
@@ -10,9 +14,13 @@ module Bushido
         end
       end
 
+      logger.info "next: #{params[:id]} = #{ENV[params[:id]]}"
+
       ENV[params[:id]] = params[:value]
       @value = ENV[params[:id]]
-      
+
+      logger.info "next: #{params[:id]} = #{ENV[params[:id]]}"
+
       respond_to do |format|
         if @value != ENV[params[:id]]
           format.html{render :layout => false, :text => true, :status => :unprocessable_entity}

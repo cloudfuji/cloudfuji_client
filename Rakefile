@@ -1,5 +1,7 @@
 require 'rake/testtask'
 require 'bundler'
+require 'ci/reporter/rake/test_unit'
+
 Bundler::GemHelper.install_tasks
 
 task :default => :test

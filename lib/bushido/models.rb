@@ -58,15 +58,24 @@ module Bushido
       puts "new_record? #{self.new_record?}"
       puts "self.id = #{self.id}"
       puts "ido_id.nil? #{ido_id.nil?}"
-      puts "ido_version == self.class.find(self.id).ido_version ? #{ido_version == self.class.find(self.id).ido_version}" unless self.new_record?
+      unless self.new_record?
+        puts "ido_version == self.class.find(self.id).ido_version ? #{ido_version == self.class.find(self.id).ido_version}"
+        puts "#{self.ido_version} == #{self.class.find(self.id).ido_version} ? #{ido_version == self.class.find(self.id).ido_version}"
+      end
       if self.ido_id.nil? or (not self.new_record? and self.ido_version == self.class.find(self.id).ido_version)
         puts "Local change, publishing to Bushido databus"
 
+        puts "Converting to Ido format..."
         data = self.to_ido
 
+        puts "Publishing: #{data}"
+
         begin
+          print "About to publish"
           response = Bushido::Data.publish(self.class.class_variable_get("@@ido_model"), data)
+          puts "done!"
         rescue => e
+          puts "ERROR!"
           puts e.inspect
           # TODO: Catch specific exceptions and bubble up errors (e.g. 'bushido is down', 'model is malformed', etc.)
           return false
@@ -105,6 +114,7 @@ module Bushido
         puts model.inspect
         
         ido_schema.each do |schema_field|
+          puts "Setting#{schema_field}= #{incoming_json[schema_field]}"
           model.send("#{schema_field}=".to_sym, incoming_json[schema_field])
         end
 
