@@ -4,7 +4,7 @@ module Bushido
     # Default to showing the bar on all paths
     @@bar_paths = [/.*/]
 
-    def set_bar_display_paths(*paths)
+    def self.set_bar_display_paths(*paths)
       @@bar_paths = paths
     end
 
