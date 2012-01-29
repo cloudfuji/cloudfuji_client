@@ -22,7 +22,7 @@ module Bushido
         end
 
         @@last_request_successful = true
-        @@last_request = JSON.parse raw
+        @@last_request = JSON(raw)
       end
 
       def post_command(url, params)
@@ -33,15 +33,16 @@ module Bushido
         end
 
         begin
+          puts "RestClient.post(#{url}, #{params.to_json}, :content_type => :json, :accept => :json)"
           raw = RestClient.post(url, params.to_json, :content_type => :json, :accept => :json)
-        rescue # => e
-          # puts e.inspect
+        rescue => e
+          puts e.inspect
           @@last_request_successful = false
           return nil
         end
 
         @@last_request_successful = true
-        @@last_request = JSON.parse raw    
+        @@last_request = JSON(raw)
       end
 
       def put_command(url, params, meta={})
