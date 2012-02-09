@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.add_dependency "json",        ">=1.4.6"
   s.add_dependency "highline",    ">=1.6.1"
   s.add_dependency "orm_adapter", "~> 0.0.3"
+  s.add_dependency "ruby_gntp",   "~> 0.3.4"
 
   s.rubyforge_project = "bushido"
 

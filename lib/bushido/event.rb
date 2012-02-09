@@ -49,9 +49,29 @@ module Bushido
         payload[:name]     = options[:name]
         payload[:data]     = options[:data]
 
-        Bushido::Command.post_command(events_url, payload)
+        
+        gntp_notify(payload) if payload[:data][:human] and ENV['RACK_ENV']=="development"
+
+        Bushido::Command.post_command(events_url, payload) if ENV['RACK_ENV']=="production"
+      end
+
+      private
+      
+      def gntp_notify(payload)
+        application_name = Rails.application.class.parent_name || "BushiDev"
+        application_icon = File.expand_path("../../../vendor/bushido_growl.png", __FILE__)
+        puts "APP ICON: #{application_icon}"
+        
+        GNTP.notify({
+            :app_name => application_name,
+            :title    => application_name,
+            :text     => payload[:data][:human],
+            :icon     => application_icon,
+            :sticky   => true
+          })
       end
     end
+
 
     def initialize(options={})
       @category = options["category"]

@@ -31,6 +31,8 @@ module Bushido #:nodoc:
   require "bushido/mail_route"
   require "bushido/user_helper"
 
+  require "ruby_gntp" if ENV["RACK_ENV"]=="development"
+  
   # Manually require the controllers for rails 2
   if defined?(Rails) && Rails::VERSION::MAJOR == 2
     base_dir = "#{File.dirname(__FILE__)}/.."
