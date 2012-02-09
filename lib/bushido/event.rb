@@ -49,9 +49,7 @@ module Bushido
         payload[:name]     = options[:name]
         payload[:data]     = options[:data]
 
-        
         gntp_notify(payload) if payload[:data][:human] and ENV['RACK_ENV']=="development"
-
         Bushido::Command.post_command(events_url, payload) if ENV['RACK_ENV']=="production"
       end
 
@@ -66,8 +64,7 @@ module Bushido
             :app_name => application_name,
             :title    => application_name,
             :text     => payload[:data][:human],
-            :icon     => application_icon,
-            :sticky   => true
+            :icon     => application_icon
           })
       end
     end
