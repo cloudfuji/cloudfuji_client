@@ -56,9 +56,10 @@ module Bushido
       private
       
       def gntp_notify(payload)
-        application_name = Rails.application.class.parent_name || "BushiDev"
+        application_name = "Bushio Development"
+        application_name = Rails.application.class.parent_name if defined? Rails
+
         application_icon = File.expand_path("../../../vendor/bushido_growl.png", __FILE__)
-        puts "APP ICON: #{application_icon}"
         
         GNTP.notify({
             :app_name => application_name,
