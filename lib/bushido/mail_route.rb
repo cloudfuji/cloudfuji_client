@@ -139,7 +139,7 @@ module Bushido
         # Run param-based constraints
         if _matches and constraints_pass?(definition[:constraints], params)
           @params['mail'] = mail
-          puts "About to fire this this: #{@params.inspect}, #{route_name}"
+          puts "Firing: #{@params.inspect}, #{route_name}"
           return Bushido::Data.fire(params, "mail_#{route_name.gsub('.', '_')}")
           break
         end

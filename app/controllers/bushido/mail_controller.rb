@@ -23,8 +23,13 @@ module Bushido
       puts "params: #{params.inspect}"
       puts "mail: #{mail.inspect}"
 
+      # Output for debugging remotely
+      Bushido::Mailroute.pretty_print_routes
+      puts "Finished routing"
+      
       # Mailroute is in charge of figuring out which callback to trigger
       Bushido::Mailroute.routes.process(mail)
+
       result = {:success => true, :message => nil, :data => {}}
       render :text => result.to_json, :status => 200
     end
