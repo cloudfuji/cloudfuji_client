@@ -1,24 +1,24 @@
 require 'spec_helper'
 
-describe "Bushido::Mailroute" do
+describe "Cloudfuji::Mailroute" do
   def routes
-    Bushido::Mailroute.routes
+    Cloudfuji::Mailroute.routes
   end
 
   def constraints(route_name)
-    Bushido::Mailroute.routes.routes[route_name][:constraints]
+    Cloudfuji::Mailroute.routes.routes[route_name][:constraints]
   end
 
   def params
-    Bushido::Mailroute.routes.instance_variable_get("@params")
+    Cloudfuji::Mailroute.routes.instance_variable_get("@params")
   end
 
   before(:each) do
-    Bushido::Mailroute.clear_routes!
+    Cloudfuji::Mailroute.clear_routes!
 
-    @standard_email = mail = {'subject' => "Bushido: New modal sign-in", 'from' => "Sean Grove <s@gobushido.com>", 'body' => "this is the new modal sign-in form subscribe: s@busi.do"}
+    @standard_email = mail = {'subject' => "Cloudfuji: New modal sign-in", 'from' => "Sean Grove <s@cloudfuji.com>", 'body' => "this is the new modal sign-in form subscribe: s@busi.do"}
     @reply_email = @standard_email
-    @reply_email['subject'] = "RE: Bushido: New modal sign-in"
+    @reply_email['subject'] = "RE: Cloudfuji: New modal sign-in"
   end
 
   context 'when drawing routes' do
@@ -26,10 +26,10 @@ describe "Bushido::Mailroute" do
       routes.routes.should == {}
     end
 
-    it 'should create an internal instance of Bushido::Mailroute' do
+    it 'should create an internal instance of Cloudfuji::Mailroute' do
       routes.routes.should == {}
-      Bushido::Mailroute.map { }
-      routes.class.should == Bushido::Mailroute
+      Cloudfuji::Mailroute.map { }
+      routes.class.should == Cloudfuji::Mailroute
     end
 
     it 'should have field matchers for standard email fields' do
@@ -39,7 +39,7 @@ describe "Bushido::Mailroute" do
     end
 
     it 'should create a route for each callback added' do
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('test-call-back') { }
       end
 
@@ -47,7 +47,7 @@ describe "Bushido::Mailroute" do
     end
 
     it 'should create a route with rules for each callback added' do
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('test-call-back') { mapper.from('test-sender') }
       end
 
@@ -55,7 +55,7 @@ describe "Bushido::Mailroute" do
     end
 
     it 'should allow composable rules for the same field' do
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('test-call-back') {
           mapper.body('event on {:day}',  {:day   => mapper.word             })
           mapper.body('at {:time}',       {:time  => mapper.ampm             })
@@ -75,7 +75,7 @@ describe "Bushido::Mailroute" do
     end
 
     it 'should allow for composable rules in any order' do
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('test-call-back') {
           mapper.body('event on {:day}',  {:day   => mapper.word             })
           mapper.body('at {:time}',       {:time  => mapper.ampm             })
@@ -98,7 +98,7 @@ describe "Bushido::Mailroute" do
   context 'when adding constraints' do
     it 'should raise an error if an unknown check is specified' do
       lambda {
-        Bushido::Mailroute.map do |mapper|
+        Cloudfuji::Mailroute.map do |mapper|
           mapper.route('test-callback') do 
             mapper.add_constraint(:reply, :invalid_checker)
           end
@@ -108,7 +108,7 @@ describe "Bushido::Mailroute" do
     
 
     it 'should add the constraint for the param field' do
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('test-callback') do
           mapper.add_constraint(:reply, :required)
         end
@@ -121,14 +121,14 @@ describe "Bushido::Mailroute" do
 
   context 'when processing routes' do
     before(:each) do
-      Bushido::Mailroute.clear_routes!
+      Cloudfuji::Mailroute.clear_routes!
 
-      @standard_email = {'subject' => "Bushido: New modal sign-in", 'from' => "Sean Grove <s@gobushido.com>", 'body' => "this is the new modal sign-in form subscribe: s@busi.do"}
+      @standard_email = {'subject' => "Cloudfuji: New modal sign-in", 'from' => "Sean Grove <s@cloudfuji.com>", 'body' => "this is the new modal sign-in form subscribe: s@busi.do"}
       @reply_email = @standard_email.dup
-      @reply_email['subject'] = "RE: Bushido: New modal sign-in"
+      @reply_email['subject'] = "RE: Cloudfuji: New modal sign-in"
 
 
-      Bushido::Mailroute.map do |mapper|
+      Cloudfuji::Mailroute.map do |mapper|
         mapper.route('example-callback') do
           mapper.add_constraint(:reply, :required)
 
@@ -152,15 +152,15 @@ describe "Bushido::Mailroute" do
     end
 
     it "should fire the callback when finding a successful route" do
-      Bushido::Data.should_receive(:fire).with(instance_of(Hash), 'mail_example-callback')
+      Cloudfuji::Data.should_receive(:fire).with(instance_of(Hash), 'mail_example-callback')
 
       routes.process(@reply_email)
     end
 
     it "should set 'from_email' and 'from_name' in params if available" do
-      @standard_email['from'] = 'Test Sender <test@gobushido.com>'
+      @standard_email['from'] = 'Test Sender <test@cloudfuji.com>'
       routes.process(@standard_email)
-      params['from_email'].should == 'test@gobushido.com'
+      params['from_email'].should == 'test@cloudfuji.com'
       params['from_name'].should == 'Test Sender'
     end
   end

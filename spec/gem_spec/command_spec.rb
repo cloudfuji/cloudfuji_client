@@ -1,33 +1,33 @@
 require 'spec_helper'
 
-describe "Bushido::Command" do
+describe "Cloudfuji::Command" do
   
   before :each do
     @dummy_url = "/sample_api_path"
     @api_params = @sample_result = @rest_params = {:key1=>"value1", :key2=>"value2"}
-    @rest_params.merge!({:auth_token => Bushido::Platform.key}) if params[:auth_token].nil? unless Bushido::Platform.key.nil?
+    @rest_params.merge!({:auth_token => Cloudfuji::Platform.key}) if params[:auth_token].nil? unless Cloudfuji::Platform.key.nil?
   end
 
   describe "last_command_successful?" do
     it "should initially return true" do
-      Bushido::Command.last_command_successful?.should be_true
+      Cloudfuji::Command.last_command_successful?.should be_true
     end
   end
 
   describe "last_command_errored?" do
     it "should initially return false" do
-      Bushido::Command.last_command_errored?.should be_false
+      Cloudfuji::Command.last_command_errored?.should be_false
     end
   end
 
   describe "request_count" do
     it "should initially be 0" do
-      Bushido::Command.request_count == 0
+      Cloudfuji::Command.request_count == 0
     end
 
     it "should return the request count" do
-      Bushido::Command.class_eval "@@request_count = 42"
-      Bushido::Command.request_count.should == 42
+      Cloudfuji::Command.class_eval "@@request_count = 42"
+      Cloudfuji::Command.request_count.should == 42
     end
   end
 
@@ -37,13 +37,13 @@ describe "Bushido::Command" do
                    :errors => ["value1", "value2"]}
     end
     it "should show messages" do
-      Bushido::Command.should_receive(:show_messages).with(@response)
-      Bushido::Command.show_response(@response)
+      Cloudfuji::Command.should_receive(:show_messages).with(@response)
+      Cloudfuji::Command.show_response(@response)
     end
 
     it "should show errors" do
-      Bushido::Command.should_receive(:show_errors).with(@response)
-      Bushido::Command.show_errors(@response)
+      Cloudfuji::Command.should_receive(:show_errors).with(@response)
+      Cloudfuji::Command.show_errors(@response)
     end
   end
 
@@ -58,18 +58,18 @@ describe "Bushido::Command" do
 
       it "should increment the request count" do
         expect {
-          Bushido::Command.get_command(@dummy_url, @api_params)
-        }.to change(Bushido::Command, :request_count).by(1)
+          Cloudfuji::Command.get_command(@dummy_url, @api_params)
+        }.to change(Cloudfuji::Command, :request_count).by(1)
       end
 
       it "should set last command as successful" do
-        Bushido::Command.get_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_successful?.should be_true
+        Cloudfuji::Command.get_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_successful?.should be_true
       end
 
       it "should return the request result" do
         # JSON parsing returns stringified keys
-        Bushido::Command.get_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
+        Cloudfuji::Command.get_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
       end
     end
 
@@ -81,12 +81,12 @@ describe "Bushido::Command" do
       end
 
       it "should set last command as failed" do
-        Bushido::Command.get_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_errored?.should be_true
+        Cloudfuji::Command.get_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_errored?.should be_true
       end
 
       it "should return nil" do
-        Bushido::Command.get_command(@dummy_url, @api_params).should == nil
+        Cloudfuji::Command.get_command(@dummy_url, @api_params).should == nil
       end
     end
   end
@@ -102,17 +102,17 @@ describe "Bushido::Command" do
      
       it "should increment the request count" do
         expect {
-          Bushido::Command.post_command(@dummy_url, @api_params)
-        }.to change(Bushido::Command, :request_count).by(1)
+          Cloudfuji::Command.post_command(@dummy_url, @api_params)
+        }.to change(Cloudfuji::Command, :request_count).by(1)
       end
 
       it "should set last command as successful" do
-        Bushido::Command.post_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_successful?.should be_true
+        Cloudfuji::Command.post_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_successful?.should be_true
       end
 
       it "should return the request result" do
-        Bushido::Command.post_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
+        Cloudfuji::Command.post_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
       end
     end
 
@@ -124,12 +124,12 @@ describe "Bushido::Command" do
       end
 
       it "should set last command as failed" do
-        Bushido::Command.post_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_errored?.should be_true
+        Cloudfuji::Command.post_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_errored?.should be_true
       end
 
       it "should return nil" do
-        Bushido::Command.post_command(@dummy_url, @api_params).should == nil
+        Cloudfuji::Command.post_command(@dummy_url, @api_params).should == nil
       end
     end
   end
@@ -145,17 +145,17 @@ describe "Bushido::Command" do
      
       it "should increment the request count" do
         expect {
-          Bushido::Command.put_command(@dummy_url, @api_params)
-        }.to change(Bushido::Command, :request_count).by(1)
+          Cloudfuji::Command.put_command(@dummy_url, @api_params)
+        }.to change(Cloudfuji::Command, :request_count).by(1)
       end
 
       it "should set last command as successful" do
-        Bushido::Command.put_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_successful?.should be_true
+        Cloudfuji::Command.put_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_successful?.should be_true
       end
 
       it "should return the request result" do
-        Bushido::Command.put_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
+        Cloudfuji::Command.put_command(@dummy_url, @api_params).should == @sample_result.stringify_keys
       end
     end
 
@@ -167,12 +167,12 @@ describe "Bushido::Command" do
       end
 
       it "should set last command as failed" do
-        Bushido::Command.put_command(@dummy_url, @api_params)
-        Bushido::Command.last_command_errored?.should be_true
+        Cloudfuji::Command.put_command(@dummy_url, @api_params)
+        Cloudfuji::Command.last_command_errored?.should be_true
       end
 
       it "should return nil" do
-        Bushido::Command.put_command(@dummy_url, @api_params).should == nil
+        Cloudfuji::Command.put_command(@dummy_url, @api_params).should == nil
       end
     end
 

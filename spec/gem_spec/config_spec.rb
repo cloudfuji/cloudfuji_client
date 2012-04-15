@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "Bushido::Config" do
+describe "Cloudfuji::Config" do
   
   it "should have API version" do
-    Bushido::Config.api_version.should be_a_kind_of(String)
+    Cloudfuji::Config.api_version.should be_a_kind_of(String)
   end
 
 end

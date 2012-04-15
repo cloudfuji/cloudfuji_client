@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Bushido::MailController do
+describe Cloudfuji::MailController do
   
   describe "index" do
     before :each do
@@ -8,7 +8,7 @@ describe Bushido::MailController do
       # So we instead stub and object and return that instead 
       obj = Object.new
 
-      Bushido::Mailroute.should_receive(:routes).and_return(obj)
+      Cloudfuji::Mailroute.should_receive(:routes).and_return(obj)
       obj.should_receive(:process)
     end
 

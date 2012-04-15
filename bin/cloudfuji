@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+begin
+  require 'cloudfuji'
+rescue LoadError
+  $: << File.expand_path("../../lib", __FILE__)
+  require 'cloudfuji'
+end
+
+options = {}
+
+commands = [:login, :remove_account, :claim,  :list, :create, :show, :start, :stop, :restart, :update, :open, :logs, :add_var, :remove_var, :ssh_key, :api_key].sort_by {|s| s.to_s}
+
+help_docs = {
+  :login          => "cloudfuji login             - Authorizes this machine to work under your Cloudfuji account",
+  :api_key        => "cloudfuji api_key           - Prints out your Cloudfuji API key for use elsewhere (in the cloudfuji development webapp, for example)",
+  :remove_account => "cloudfuji remove_account    - Removes all Cloudfuji information from this machine",
+  :list           => "cloudfuji list              - List all of your deployed Cloudfuji apps",
+  :claim          => "cloudfuji claim      [NAME] - Claim a running Cloudfuji app as your own",
+  :create         => "cloudfuji create     [URL]  - Deploy a Cloudfuji app from a git repository in URL",
+  :show           => "cloudfuji show       [NAME] - Provide a detailed view of the Cloudfuji app",
+  :start          => "cloudfuji start      [NAME] - Turns the app on if it's been shut down for any reason",
+  :stop           => "cloudfuji stop       [NAME] - Turns the app off to prevent any access",
+  :restart        => "cloudfuji restart    [NAME] - Performace a stop and start in succession" ,
+  :update         => "cloudfuji update     [NAME] - Will stop the running cloudfuji app, pull from the url originally supplied to the app, update in place, and start back up",
+  :open           => "cloudfuji open       [NAME] - Open browser window to the running Cloudfuji app",
+  :create         => "cloudfuji create     [NAME] - Creates a new app",
+  :logs           => "cloudfuji logs       [NAME] - Retrieves all of the logs for an app and returns them in a JSON structure",
+  :ssh_key        => "cloudfuji ssh_key    [NAME] - Retrieves ssh_key for NAME, only needed for private repos (e.g. on github)",
+  :add_var        => "cloudfuji add_var    [NAME] [KEY] [VALUE] - Adds an environmental variable for an app to use",
+  :remove_var     => "cloudfuji remove_var [NAME] [KEY] - Removes an existing environmental variable from an app"
+}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: cloudfuji <command>"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on("-h", "--help [command]", commands, "Help (this screen)") do |h|
+    if h.nil?
+      puts opts
+      puts "Supported commands: #{commands.join(', ')}"
+      exit
+    end
+
+    puts help_docs[h]
+    exit
+  end
+
+  opts.on_tail("-V", "--version", "Show version") do
+    puts Cloudfuji::VERSION.join('.')
+    exit
+  end
+end.parse!
+
+command = ARGV.first
+
+if command
+  case command.downcase.to_sym
+
+  when :claim           then Cloudfuji::App.claim(ARGV[1])
+  when :list            then Cloudfuji::App.list()
+  when :create          then Cloudfuji::App.create(ARGV[1])
+  when :show            then Cloudfuji::App.show(ARGV[1])
+  when :start           then Cloudfuji::App.start(ARGV[1])
+  when :stop            then Cloudfuji::App.stop(ARGV[1])
+  when :restart         then Cloudfuji::App.restart(ARGV[1])
+  when :update          then Cloudfuji::App.update(ARGV[1])
+  when :open            then Cloudfuji::App.open(ARGV[1])
+
+  when :add_domain      then Cloudfuji::App.add_domain(ARGV[1], ARGV[2])
+  when :remove_domain   then Cloudfuji::App.remove_domain(ARGV[1])
+  when :add_var         then Cloudfuji::App.add_var(ARGV[1], ARGV[2], ARGV[3])
+  when :remove_var      then Cloudfuji::App.remove_var(ARGV[1], ARGV[2])
+  when :clear_logs      then Cloudfuji::App.clear_logs(ARGV[1])
+  when :logs            then Cloudfuji::App.logs(ARGV[1])
+  when :ssh_key         then Cloudfuji::App.ssh_key(ARGV[1])
+  else
+    puts "I don't know how to '#{command}'"
+    puts "I do know how to do these though: #{commands.join(', ')}"
+  end
+else
+  puts "usage: cloudfuji <command>\n\nSee cloudfuji -h for more detailed instructions"
+  puts "Supported commands: #{commands.join(', ')}"
+end

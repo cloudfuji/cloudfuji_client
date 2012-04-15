@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Bushido::Base" do
+describe "Cloudfuji::Base" do
 
   def url_helpers
     {
@@ -16,7 +16,7 @@ describe "Bushido::Base" do
     url_helpers.stringify_keys.each do |prefix, method_names|
       method_names.each do |method_name|
         full_method_name = method_name.to_s + "_" + prefix + "_" + "url"
-        Bushido::Base.send(full_method_name.to_sym).should == "#{Bushido::Platform.host}/#{prefix}/#{Bushido::Config.api_version}/#{method_name}"
+        Cloudfuji::Base.send(full_method_name.to_sym).should == "#{Cloudfuji::Platform.host}/#{prefix}/#{Cloudfuji::Config.api_version}/#{method_name}"
       end
     end
   end

@@ -1,7 +1,7 @@
 #:nodoc:
 source "http://rubygems.org"
 
-# Specify your gem's dependencies in bushido.gemspec
+# Specify your gem's dependencies in cloudfuji.gemspec
 gemspec
 
 gem "sqlite3-ruby"

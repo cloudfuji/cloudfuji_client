@@ -5,9 +5,9 @@ if ActionController::Routing.name =~ /ActionDispatch/
   module ActionDispatch::Routing
     class RouteSet #:nodoc:
       Mapper.class_eval do
-        def bushido_routes
+        def cloudfuji_routes
           Rails.application.routes.draw do
-            namespace 'bushido' do
+            namespace 'cloudfuji' do
               resources :envs, :only => [ :update ]
               match '/data' => "data#index"
 
@@ -27,11 +27,11 @@ else
     class RouteSet
       
       Mapper.class_eval do
-        def bushido_routes
-          namespace 'bushido' do |bushido|
-            bushido.resources :envs, :only => [ :update ]
-            bushido.connect '/data', :controller=>:data, :action=>:index
-            bushido.connect '/mail', :controller=>:mail, :action=>:index
+        def cloudfuji_routes
+          namespace 'cloudfuji' do |cloudfuji|
+            cloudfuji.resources :envs, :only => [ :update ]
+            cloudfuji.connect '/data', :controller=>:data, :action=>:index
+            cloudfuji.connect '/mail', :controller=>:mail, :action=>:index
           end
         end
       end

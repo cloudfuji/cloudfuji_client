@@ -6,7 +6,7 @@ rvm_lib_path = "#{`echo $rvm_path`.strip}/lib"
 $LOAD_PATH.unshift(rvm_lib_path) unless $LOAD_PATH.include?(rvm_lib_path)
 require 'rvm'
 RVM.use("1.8.7")
-RVM.gemset_use! "bushidogem-23xtest"
+RVM.gemset_use! "cloudfujigem-23xtest"
 RVM.run "gem install bundler --no-ri --no-rdoc && bundle"
 
 require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))

@@ -1,5 +1,5 @@
 TestApp::Application.routes.draw do
-  bushido_routes
+  cloudfuji_routes
 
   match '/home' => 'static#home'
 

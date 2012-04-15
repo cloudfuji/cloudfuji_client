@@ -1,8 +1,8 @@
-class BushidoCreate<%= table_name.camelize %> < ActiveRecord::Migration
+class CloudfujiCreate<%= table_name.camelize %> < ActiveRecord::Migration
   def self.up
     create_table(:<%= table_name %>) do |t|
-      t.string :bushido_id
-      t.string :bushido_version
+      t.string :cloudfuji_id
+      t.string :cloudfuji_version
 
 <% for attribute in attributes -%>
       t.<%= attribute.type %> :<%= attribute.name %>
@@ -11,7 +11,7 @@ class BushidoCreate<%= table_name.camelize %> < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :<%= table_name %>, :bushido_id, :unique => true
+    add_index :<%= table_name %>, :cloudfuji_id, :unique => true
   end
 
   def self.down

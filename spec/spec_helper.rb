@@ -9,7 +9,7 @@ require 'rspec/rails'
 $:.unshift File.dirname(__FILE__)
 $:.unshift File.expand_path('../../lib', __FILE__)
 
-require 'bushido'
+require 'cloudfuji'
 
 CoverMe.config do |c|
     # where is your project's root:
