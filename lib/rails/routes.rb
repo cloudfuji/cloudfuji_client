@@ -1,7 +1,5 @@
 if ActionController::Routing.name =~ /ActionDispatch/
-  
   # Rails 3.x
-
   module ActionDispatch::Routing
     class RouteSet #:nodoc:
       Mapper.class_eval do
@@ -9,9 +7,9 @@ if ActionController::Routing.name =~ /ActionDispatch/
           Rails.application.routes.draw do
             namespace 'cloudfuji' do
               resources :envs, :only => [ :update ]
-              match '/data' => "data#index"
 
               # TODO restrict to POST-only
+              match '/data' => "data#index"
               match '/mail' => "mail#index"
             end
           end
@@ -25,7 +23,6 @@ else
   # Rails 2.x
   module ActionController::Routing
     class RouteSet
-      
       Mapper.class_eval do
         def cloudfuji_routes
           namespace 'cloudfuji' do |cloudfuji|
@@ -35,8 +32,6 @@ else
           end
         end
       end
-
     end
   end
-
 end

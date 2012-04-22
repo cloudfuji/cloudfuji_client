@@ -4,12 +4,14 @@ module Cloudfuji
     # POST /cloudfuji/data/
     def index
       @key = params.delete("key")
+
       if ENV["CLOUDFUJI_APP_KEY"] != @key
         respond_to do |format|
           format.html { render :layout => false, :text => true, :status => :forbidden }
-          format.json { render :status => 401 }
-          return
+          format.json { render :json => {:error => "Not authorized to submit data to this app" }, :status => 401 }
         end
+
+        return
       end
       
       puts "Idobus Data rec'd: #{params.inspect}"
