@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.version     = Cloudfuji::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Sean Grove", "Kev Zettler"]
-  s.email       = ["support@cloudfuji.com","s@cloudfuji.com"]
-  s.homepage    = "https://github.com/sgrove/cloudfujigem"
+  s.email       = ["support@cloudfuji.com","s@bushi.do", "k@bushi.do"]
+  s.homepage    = "https://github.com/cloudfuji/cloudfuji_client"
   s.summary     = %q{Cloudfuji integration}
-  s.description = %q{A module for integrating the Cloudfuji platform into a rails app}
+  s.description = %q{A module for integrating the Cloudfuji platform into a ruby app}
 
   s.add_dependency "rest-client", ">=1.6.1"
   s.add_dependency "json",        ">=1.4.6"
