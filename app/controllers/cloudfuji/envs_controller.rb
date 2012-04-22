@@ -5,7 +5,7 @@ module Cloudfuji
       if ENV["CLOUDFUJI_APP_KEY"] != params[:key] or params[:id] == "CLOUDFUJI_KEY"
         respond_to do |format|
           format.html { render :layout => false, :text => true, :status => :forbidden }
-          format.json { render :status => :unprocessable_entity }
+          format.json { render :json => {:error => "Not authorized to submit data to this app" }, :status => :unprocessable_entity }
         end
 
       else
