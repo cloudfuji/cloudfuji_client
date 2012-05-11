@@ -1,63 +1,64 @@
 module Cloudfuji
   class Mailroute
-    def self.map(&block)
-      raise StandardError.new("Mailroute only supported in Ruby >= 1.9.1") if RUBY_VERSION < "1.9.1"
-      
-      @@routes ||= self.new
-      yield @@routes
-    end
+    class << self
+      def map(&block)
+        raise StandardError.new("Mailroute only supported in Ruby >= 1.9.1") if RUBY_VERSION < "1.9.1"
 
-    def self.routes
-      @@routes
-    end
+        yield routes
+      end
 
-    def self.clear_routes!
-      @@routes = self.new
-    end
+      def routes
+        @@routes ||= new
+      end
 
-    def self.pretty_print_routes
-      @@routes.routes.each_pair do |route_name, definition|
-        puts "#{route_name} => "
-        definition[:rules].each do |rule|
-          pretty_print_rule(rule, "\t\t")
-        end
-        definition[:constraints].each do |constraint|
-          pretty_print_contraint(constraint, "\t\t")
+      def clear_routes!
+        @@routes = nil
+      end
+
+      def pretty_print_routes
+        routes.routes.each_pair do |route_name, definition|
+          puts "#{route_name} => "
+          definition[:rules].each do |rule|
+            pretty_print_rule(rule, "\t\t")
+          end
+          definition[:constraints].each do |constraint|
+            pretty_print_contraint(constraint, "\t\t")
+          end
         end
       end
-    end
 
-    def self.pretty_print_rule(rule, prefix="")
-      output = "#{prefix}#{rule.first} => #{string_to_regex(rule[1]).inspect}, required? #{rule.last == true}"
-      puts output
-    end
+      def pretty_print_rule(rule, prefix="")
+        output = "#{prefix}#{rule.first} => #{string_to_regex(rule[1]).inspect}, required? #{rule.last == true}"
+        puts output
+      end
 
-    def self.pretty_print_contraint(constraint, prefix="")
-      output = "#{prefix}Constraint: #{constraint.inspect}"
-      puts output
-    end
+      def pretty_print_contraint(constraint, prefix="")
+        output = "#{prefix}Constraint: #{constraint.inspect}"
+        puts output
+      end
 
-    # Taken from somewhere on stackoverflow, props to the author!
-    def self.string_to_regex(string)
-      return nil unless string.strip.match(/\A\/(.*)\/(.*)\Z/mx)
-      regexp , flags = $1 , $2
-      return nil if !regexp || flags =~ /[^xim]/m
+      # Taken from somewhere on stackoverflow, props to the author!
+      def string_to_regex(string)
+        return nil unless string.strip.match(/\A\/(.*)\/(.*)\Z/mx)
+        regexp , flags = $1 , $2
+        return nil if !regexp || flags =~ /[^xim]/m
 
-      x = /x/.match(flags) && Regexp::EXTENDED
-      i = /i/.match(flags) && Regexp::IGNORECASE
-      m = /m/.match(flags) && Regexp::MULTILINE
+        x = /x/.match(flags) && Regexp::EXTENDED
+        i = /i/.match(flags) && Regexp::IGNORECASE
+        m = /m/.match(flags) && Regexp::MULTILINE
 
-      Regexp.new regexp , [x,i,m].inject(0){|a,f| f ? a+f : a }
-    end
+        Regexp.new regexp , [x,i,m].inject(0){|a,f| f ? a+f : a }
+      end
 
-    def self.field_matcher(*field_names)
-      self.class_eval do
-        field_names.each do |field_name|
-          define_method field_name do |line, *args|
-            constraints = args.first || {}
-            required    = args[1]
+      def field_matcher(*field_names)
+        class_eval do
+          field_names.each do |field_name|
+            define_method field_name do |line, *args|
+              constraints = args.first || {}
+              required    = args[1]
 
-            add_route_rule(field_name.to_s, build_matcher(line, constraints), required)
+              add_route_rule(field_name.to_s, build_matcher(line, constraints), required)
+            end
           end
         end
       end
@@ -131,11 +132,11 @@ module Cloudfuji
             _matches = false
             break
           end
-          
+
           # Only Ruby 1.9 support named capture groups
           result.names.each { |key| @params[key] = result[key] }
         end
-        
+
         # Run param-based constraints
         if _matches and constraints_pass?(definition[:constraints], params)
           @params['mail'] = mail
