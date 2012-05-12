@@ -12,9 +12,5 @@ module Cloudfuji
     def initialize
       @params ||= {}
     end
-
-    def params
-      @params
-    end
   end
 end
