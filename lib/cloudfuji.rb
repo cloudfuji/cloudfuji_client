@@ -4,16 +4,18 @@ module Cloudfuji #:nodoc:
   require 'json'
   require 'highline/import'
   require 'orm_adapter'
-  require 'cloudfuji/engine'  
+  require 'rails/version'
+  require 'action_controller'
   if defined?(Rails) && Rails::VERSION::MAJOR == 3
     require "action_dispatch"
   end
   require "rails/routes"
+  require 'cloudfuji/engine'
   require "cloudfuji/base"
   require "cloudfuji/bar"
   require "cloudfuji/config"
   require "cloudfuji/smtp"
-  
+
   require "hooks"
   require "cloudfuji/platform"
   require "cloudfuji/utils"
@@ -44,7 +46,7 @@ module Cloudfuji #:nodoc:
   if defined?(Rails) && Rails::VERSION::MAJOR == 3
     Cloudfuji::SMTP.setup_action_mailer_smtp!
   end
-  
+
   # Default way to setup Cloudfuji. Run rails generate cloudfuji_install to create
   # a fresh initializer with all configuration values.
   def self.setup

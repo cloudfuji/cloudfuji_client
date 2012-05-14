@@ -8,6 +8,8 @@ module Cloudfuji
       end
 
       def setup_action_mailer_smtp!
+        require "action_mailer"
+
         ActionMailer::Base.smtp_settings = {
           :enable_starttls_auto => Cloudfuji::SMTP.tls,
           :tls =>                  Cloudfuji::SMTP.tls,
