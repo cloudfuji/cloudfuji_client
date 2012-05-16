@@ -8,6 +8,14 @@ module Cloudfuji
         @@observers << observer
       end
 
+      # Returns an array of the unique instance methods defined
+      # for all observers, except #catch_all
+      def observed_events
+        @@observers.map {|observer|
+          observer.instance_methods - Cloudfuji::EventObserver.instance_methods
+        }.flatten.uniq - [:catch_all]
+      end
+
       def fire(data, event)
         puts "Cloudfuji Hooks Firing #{event} with => #{data.inspect}"
 
