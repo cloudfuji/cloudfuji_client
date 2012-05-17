@@ -2,51 +2,52 @@ module Cloudfuji
   class Data #:nodoc:
     @@observers = []
 
-    def self.add_observer(observer)
-      puts "Subscribing #{observer} to Cloudfuji data calls"
-      @@observers << observer
-    end
-    
-    def self.fire(data, event)
-      puts "Cloudfuji Hooks Firing #{event} with => #{data.inspect}"
-
-      processed = false
-
-      @@observers.each do |observer|
-        puts "#{observer}.respond_to?(#{event}) => #{observer.respond_to?(event)}"
-
-        if observer.respond_to?(event)
-          processed = true
-
-          # Make a copy of the data so it's not mutated as the events
-          # pass through the observers
-          observer.instance_variable_set("@params", data.dup)
-
-          result = observer.send(event)
-
-          # Allow an observer to halt event propagation
-          if result == :halt
-            puts "Observer #{observer} halted event propagation"
-            break
-          end
-        end
+    class << self
+      def add_observer(observer)
+        puts "Subscribing #{observer} to Cloudfuji data calls"
+        @@observers << observer
       end
 
-      # We've checked all the observers to see if they respond to the
-      # named events, so if the event is still unprocessed then let's
-      # fall back on the first catch_all event we find
-      if !processed
-        @@observers.each do |observer|
-          if observer.respond_to?(:catch_all)
-            observer.instance_variable_set("@params", data.dup)
+      # Returns an array of the unique instance methods defined
+      # for all observers, except #catch_all
+      def observed_events
+        @@observers.map {|observer|
+          observer.class.instance_methods - Cloudfuji::EventObserver.instance_methods
+        }.flatten.uniq - [:catch_all]
+      end
 
-            observer.send(:catch_all)
-            break
+      def fire(data, event)
+        puts "Cloudfuji Hooks Firing #{event} with => #{data.inspect}"
+
+        halted = false
+        # Test if each observer responds to the named event, or #catch_all
+        [event, :catch_all].each do |method|
+          @@observers.each do |observer|
+            # Process observer if event propagation isn't halted,
+            # or we are trying the #catch_all method
+            # (All #catch_all methods should be processed regardless of
+            #  halted status)
+            if !halted || method == :catch_all
+              puts "#{observer}.respond_to?(#{method}) => #{observer.respond_to?(method)}"
+
+              if observer.respond_to?(method)
+                # Make a copy of the data so it's not mutated as the events
+                # pass through the observers
+                observer.instance_variable_set("@params", data.dup)
+
+                result = observer.send(method)
+
+                # Allow an observer to halt event propagation for
+                # other named event methods
+                if result == :halt
+                  puts "Observer #{observer} halted event propagation"
+                  halted = true
+                end
+              end
+            end
           end
         end
       end
     end
   end
 end
-
-
