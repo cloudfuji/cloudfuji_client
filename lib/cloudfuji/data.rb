@@ -12,7 +12,7 @@ module Cloudfuji
       # for all observers, except #catch_all
       def observed_events
         @@observers.map {|observer|
-          observer.instance_methods - Cloudfuji::EventObserver.instance_methods
+          observer.class.instance_methods - Cloudfuji::EventObserver.instance_methods
         }.flatten.uniq - [:catch_all]
       end
 
