@@ -20,9 +20,9 @@ module Cloudfuji
         puts "Cloudfuji Hooks Firing #{event} with => #{data.inspect}"
 
         halted = false
-        @@observers.each do |observer|
-          # Test if each observer responds to the named event, or #catch_all
-          [event, :catch_all].each do |method|
+        # Test if each observer responds to the named event, or #catch_all
+        [event, :catch_all].each do |method|
+          @@observers.each do |observer|
             # Process observer if event propagation isn't halted,
             # or we are trying the #catch_all method
             # (All #catch_all methods should be processed regardless of
