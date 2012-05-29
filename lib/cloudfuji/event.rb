@@ -44,12 +44,37 @@ module Cloudfuji
         # can be more quickly caught for the developer
         return StandardError("Cloudfuji::Event format incorrect, please make sure you're using the correct structure for sending events") unless !options[:name].nil? && !options[:category].nil? && !options[:data].nil?
 
-        payload            = {}
-        payload[:category] = options[:category]
-        payload[:name]     = options[:name]
-        payload[:data]     = options[:data]
+        publish_locally(options) and return if ENV['CLOUDFUJI_LOCAL_APPS'].present?
+
+        payload = {
+          :category => options[:category],
+          :name     => options[:name],
+          :data     => options[:data]
+        }
 
         Cloudfuji::Command.post_command(events_url, payload)
+      end
+
+      # During development, allow developers to configure a list of local
+      # ports & keys to post Cloudfuji events
+      # e.g. CLOUDFUJI_LOCAL_APPS=3000:abcdef,3001:abcdef
+      def publish_locally(options)
+        payload = {
+          :category    => options[:category],
+          :event       => options[:name],      # Cloudfuji client uses :event key
+          :data        => options[:data],
+          'auth_token' => ''                   # Cloudfuji client uses 'key' instead of 'auth_token'
+        }
+
+        ENV['CLOUDFUJI_LOCAL_APPS'].split(',').each do |app|
+          port, key = app.split(":")
+          unless port && key
+            raise "ENV['CLOUDFUJI_LOCAL_APPS'] not formatted correctly, expecting: CLOUDFUJI_LOCAL_APPS=3000:abcdef,3001:abcdef"
+          end
+          payload[:key] = key
+          url = "localhost:#{port.strip}/cloudfuji/data"
+          Cloudfuji::Command.post_command(url, payload)
+        end
       end
     end
 
