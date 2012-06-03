@@ -11,9 +11,14 @@ module Cloudfuji
       # Returns an array of the unique instance methods defined
       # for all observers, except #catch_all
       def observed_events
-        @@observers.map {|observer|
-          observer.class.instance_methods - Cloudfuji::EventObserver.instance_methods
-        }.flatten.uniq - [:catch_all]
+        if Cloudfuji::Platform.on_cloudfuji?
+          @@observers.map {|observer|
+            observer.class.instance_methods - Cloudfuji::EventObserver.instance_methods
+          }.flatten.uniq - [:catch_all]
+        else
+          # Return some dummy events if in development
+          %w(dummy_event app_claimed app_destroyed user_added email_opened).map(&:to_sym)
+        end
       end
 
       def fire(data, event)
