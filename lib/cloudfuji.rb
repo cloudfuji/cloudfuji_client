@@ -23,6 +23,7 @@ module Cloudfuji #:nodoc:
   require "cloudfuji/app"
   require "cloudfuji/user"
   require "cloudfuji/event"
+  require "cloudfuji/expectation"
   require "cloudfuji/version"
   require "cloudfuji/envs"
   require "cloudfuji/data"
