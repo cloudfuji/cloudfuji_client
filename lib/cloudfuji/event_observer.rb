@@ -12,5 +12,9 @@ module Cloudfuji
     def initialize
       @params ||= {}
     end
+
+    def data
+      @params['data']
+    end
   end
 end
