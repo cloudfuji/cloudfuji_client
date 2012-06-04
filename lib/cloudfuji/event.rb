@@ -33,10 +33,14 @@ module Cloudfuji
         publish_locally(options) and return if ENV['CLOUDFUJI_LOCAL_APPS'].present?
 
         payload = {
-          :category => options[:category],
-          :name     => options[:name],
-          :data     => options[:data]
+          :category    => options[:category],
+          :name        => options[:name],
+          :data        => options[:data]
         }
+
+        # Baby-steps to multi-tenancy
+        payload[:user_ido_id] = options[:user_ido_id] if options[:user_ido_id]
+        payload[:target_id]   = options[:target_id]   if options[:target_id]
 
         Cloudfuji::Command.post_command(events_url, payload)
       end
